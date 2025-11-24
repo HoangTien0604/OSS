@@ -1,0 +1,40 @@
+name: Deploy Frontend to Somee
+
+on:
+  push:
+    paths:
+      - "Frontend/**"
+      - ".github/workflows/frontend-deploy.yml"
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: |
+          cd Frontend
+          npm install
+
+      - name: Build project
+        run: |
+          cd Frontend
+          npm run build
+
+      - name: Upload via FTP to Somee
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FRONTEND_FTP_HOST }}
+          username: ${{ secrets.FRONTEND_FTP_USER }}
+          password: ${{ secrets.FRONTEND_FTP_PASS }}
+          local-dir: Frontend/dist/
+          server-dir: /wwwroot/
+          log-level: verbose
