@@ -35,6 +35,6 @@ jobs:
           server: ${{ secrets.FRONTEND_FTP_HOST }}
           username: ${{ secrets.FRONTEND_FTP_USER }}
           password: ${{ secrets.FRONTEND_FTP_PASS }}
-          local-dir: Frontend/dist/
+          local-dir: ./
           server-dir: /wwwroot/
           log-level: verbose
